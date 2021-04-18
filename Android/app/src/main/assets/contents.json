@@ -1,0 +1,248 @@
+{
+  "android_play_store_link": "",
+  "ios_app_store_link": "",
+  "sticker_packs": [
+    {
+      "image_data_version": "1",
+      "identifier": "dolly1",
+      "name": "Dolly The Dinosaur 1",
+      "publisher": "WarEagle",
+      "tray_image_file": "tray_dolly.png",
+      "publisher_email": "sjurwareagle@googlemail.com",
+      "publisher_website": "https://www.twitch.tv/dolly_the_dinosaur",
+      "privacy_policy_website": "",
+      "license_agreement_website": "",
+      "stickers": [
+        {
+          "image_file": "dollyBonk.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyDeimos.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyDidit.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyEvil.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyFood.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyGeneva.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyGift.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyGo.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyHi.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyHug.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyHype.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyIcecool.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyLds.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyLoot.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyLove.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyLurk.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyNom.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyParty.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyPray.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollySad.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyScared.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollySip.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollySleep.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyZen.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "quinnSmug.webp",
+          "emojis": [
+            "😊"
+          ]
+        }
+      ]
+    },
+    {
+      "image_data_version": "1",
+      "identifier": "dolly2",
+      "name": "Dolly The Dinosaur 2",
+      "publisher": "WarEagle",
+      "tray_image_file": "tray_dolly.png",
+      "publisher_email": "sjurwareagle@googlemail.com",
+      "publisher_website": "https://www.twitch.tv/dolly_the_dinosaur",
+      "privacy_policy_website": "",
+      "license_agreement_website": "",
+      "stickers": [
+        {
+          "image_file": "dollyt1Bard.webp",
+          "emojis": [
+            "🎻"
+          ]
+        },
+        {
+          "image_file": "dollyt1Fight.webp",
+          "emojis": [
+            "🤺"
+          ]
+        },
+        {
+          "image_file": "dollyt1Grin.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyt1Love.webp",
+          "emojis": [
+            "♥"
+          ]
+        },
+        {
+          "image_file": "dollyt1Mage.webp",
+          "emojis": [
+            "🧙‍"
+          ]
+        },
+        {
+          "image_file": "dollyt1Royal.webp",
+          "emojis": [
+            "👑"
+          ]
+        },
+        {
+          "image_file": "dollyOld.webp",
+          "emojis": [
+            "🥱"
+          ]
+        },
+        {
+          "image_file": "dollyt1Hi.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyGrats.webp",
+          "emojis": [
+            "😊"
+          ]
+        },
+        {
+          "image_file": "dollyt1Snooze.webp",
+          "emojis": [
+            "🛌"
+          ]
+        },
+        {
+          "image_file": "dollySnooze.webp",
+          "emojis": [
+            "🛌"
+          ]
+        }
+      ]
+    }
+  ]
+}

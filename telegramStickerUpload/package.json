@@ -1,0 +1,28 @@
+{
+  "name": "telegram-sticker-upload",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "docker:newrun:": "run-s docker:build:convert docker:run:convert",
+    "docker:build:convert": "docker build -f ../Docker/Dockerfile-convert ../ -t whatsapp-convert/latest",
+    "docker:run:convert": "docker run -v E:\\IdeaProjects\\whatsappstickereagle:/projectDir whatsapp-convert/latest sh -c \"cd /projectDir/imageConverter ; sh /scripts/convertStickerTelegram.sh\"",
+    "upload-sticker": "ts-node src/upload-sticker.ts"
+  },
+  "dependencies": {
+    "request": "2.83.0",
+    "node-emoji": "1.10.0",
+    "telegraf": "3.38.0",
+    "http-debug": "0.1.2"
+  },
+  "devDependencies": {
+    "@types/node-emoji": "1.8.1",
+    "@types/node": "9.4.6",
+    "codelyzer": "4.5.0",
+    "ts-node": "7.0.1",
+    "tslint": "5.9.1",
+    "request-promise": "4.2.5",
+    "typescript": "2.7.2",
+    "rimraf": "2.6.2",
+    "npm-run-all": "4.1.5"
+  }
+}
