@@ -38,7 +38,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    sh "cp /var/jenkins_home/android/android_keystore_${IDENTIFIER}.properties Docker/android_keystore.properties"
+                    sh "cp /var/jenkins_home/android/android_keystore.properties Docker/android_keystore.properties"
                     sh 'cp /var/jenkins_home/android/android_service_account.json Docker'
                     sh 'cp /var/jenkins_home/android/android.jks Docker'
                     docker.build("${env.DOCKER_IMAGE_NAME}", "-f Docker/Dockerfile-Buildimage .")
