@@ -56,7 +56,7 @@ const emptyStickerSet = async function (technicalName: string) {
 
 const createStickerPack = async function (technicalName: string, packName: string) {
     //TODO change this path
-    const uploadedImage = await bot.telegram.uploadStickerFile(stickerPackOwner, {source: "/project/imageConverter/telegram/eagle/09.png"})
+    const uploadedImage = await bot.telegram.uploadStickerFile(stickerPackOwner, {source: "/project/imageConverter/telegram/dolly1/dollyBonk.png"})
 
     const stickerData: StickerData = {
         png_sticker: uploadedImage.file_id,
