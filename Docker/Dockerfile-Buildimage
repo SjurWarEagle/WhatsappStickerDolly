@@ -40,13 +40,13 @@ RUN $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-${ANDROID_PLATFORM}"
 RUN $ANDROID_HOME/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS_VERSION}"
 
 # Install Gradle
-RUN wget -q https://services.gradle.org/distributions/gradle-5.4.1-bin.zip \
-    && unzip gradle-5.4.1-bin.zip -d /opt \
-    && rm gradle-5.4.1-bin.zip
+RUN wget -q https://services.gradle.org/distributions/gradle-5.6.2-bin.zip \
+    && unzip gradle-5.6.2-bin.zip -d /opt \
+    && rm gradle-5.6.2-bin.zip
 
 # Set Gradle in the environment variables
-ENV GRADLE_HOME /opt/gradle-5.4.1
-ENV PATH $PATH:/opt/gradle-5.4.1/bin
+ENV GRADLE_HOME /opt/gradle-5.6.2
+ENV PATH $PATH:/opt/gradle-5.6.2/bin
 
 RUN chmod 777 ${ANDROID_HOME}
 
