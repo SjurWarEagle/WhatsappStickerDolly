@@ -1,0 +1,63 @@
+FROM ubuntu:xenial
+
+USER root
+RUN mkdir -p /builddir
+ENV HOME /builddir
+# If you use -v or --volume to bind-mount a file or directory that does not yet exist on the Docker host, -v will create the endpoint for you. It is always created as a directory.
+RUN rm -rf /builddir/android_keystore.properties
+
+ARG ANDROID_SDK_VERSION="4333796"
+ARG ANDROID_HOME="/opt/android-sdk"
+ARG ANDROID_PLATFORM="29"
+ARG ANDROID_BUILD_TOOLS_VERSION="28.0.3"
+
+ENV ANDROID_HOME "${ANDROID_HOME}"
+
+# Install system package dependencies
+RUN echo 'APT::Install-Recommends 0;' >> /etc/apt/apt.conf.d/01norecommends
+RUN apt-get update \
+    && apt-get install -y \
+       build-essential \
+       openjdk-8-jre \
+       openjdk-8-jdk \
+       curl \
+       wget \
+       unzip \
+       dos2unix \
+       git
+
+# Install SDK tool
+RUN  curl -fSLk https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_VERSION}.zip -o sdk-tools-linux-${ANDROID_SDK_VERSION}.zip \
+    && unzip sdk-tools-linux-${ANDROID_SDK_VERSION}.zip \
+    && mkdir /opt/android-sdk \
+    && mv tools /opt/android-sdk \
+    && rm sdk-tools-linux-${ANDROID_SDK_VERSION}.zip
+RUN (while sleep 2; do echo "y"; done) | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+
+# Install Android SDK
+RUN $ANDROID_HOME/tools/bin/sdkmanager "platform-tools"
+RUN $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-${ANDROID_PLATFORM}"
+RUN $ANDROID_HOME/tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS_VERSION}"
+
+# Install Gradle
+RUN wget -q https://services.gradle.org/distributions/gradle-5.4.1-bin.zip \
+    && unzip gradle-5.4.1-bin.zip -d /opt \
+    && rm gradle-5.4.1-bin.zip
+
+# Set Gradle in the environment variables
+ENV GRADLE_HOME /opt/gradle-5.4.1
+ENV PATH $PATH:/opt/gradle-5.4.1/bin
+
+RUN chmod 777 ${ANDROID_HOME}
+
+COPY Docker/android_keystore.properties /builddir/
+COPY Docker/android_service_account.json /builddir/
+COPY Docker/android.jks /builddir/
+COPY tools/bundletool-all-0.9.0.jar /builddir/tools/bundletool-all-0.9.0.jar
+
+# cleanup
+RUN apt-get autoremove -y \
+    && rm -rf /tmp/sdk-tools-linux-${ANDROID_SDK_VERSION}.zip \
+    && mkdir -p /builddir
+
+WORKDIR /builddir

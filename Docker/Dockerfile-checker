@@ -1,0 +1,14 @@
+FROM node:13.7.0-stretch
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update --fix-missing && apt-get upgrade -y --no-install-recommends
+RUN apt-get install -y --no-install-recommends dos2unix
+ADD Checker /project/Checker
+RUN dos2unix /project/Checker/runChecker.sh
+RUN rm -rf /project/Checker/node_modules
+
+RUN mkdir -p /project/Android
+ADD Android /project/Android
+
+RUN cd /project/Checker && npm install
+WORKDIR /project/Checker

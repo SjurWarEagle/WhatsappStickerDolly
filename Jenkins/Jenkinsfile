@@ -1,0 +1,191 @@
+#!groovy
+
+pipeline {
+    agent any
+
+    options() {
+        buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3'))
+        disableConcurrentBuilds()
+        timeout(time: 30, unit: 'MINUTES')
+    }
+
+    environment {
+        IDENTIFIER = "experiments"
+        PRODUCT_NAME = "WhatsApp-Sticker-de.tkunkel.${IDENTIFIER}"
+        PRODUCT_NAME = "WhatsApp-Sticker-de.tkunkel.${IDENTIFIER}"
+        PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
+        DOCKER_IMAGE_NAME = "build-${PRODUCT_NAME.toLowerCase()}-${BRANCH_NAME.toLowerCase()}"
+        DOCKER_CONVERT_CHECKER = "convert-${PRODUCT_NAME.toLowerCase()}-${BRANCH_NAME.toLowerCase()}"
+        DOCKER_IMAGE_CHECKER = "test-${PRODUCT_NAME.toLowerCase()}-${BRANCH_NAME.toLowerCase()}"
+        DOCKER_IMAGE_TELEGRAM = "telegram-sticker-${PRODUCT_NAME.toLowerCase()}-${BRANCH_NAME.toLowerCase()}"
+    }
+
+    stages {
+
+        stage('Changelog') {
+            steps {
+                dir('Android') {
+                    script {
+                        sh 'git log  --pretty="%cd %an %s" --date=format:"%m/%d %H:%M" | head -c 450 > git-changes.txt'
+                        archiveArtifacts artifacts: 'git-changes.txt', fingerprint: true, allowEmptyArchive: true
+                        // https://github.com/Triple-T/gradle-play-publisher#common-configuration
+                        sh 'mkdir -p app/src/main/play/release-notes/en-US/'
+                        sh 'cp git-changes.txt app/src/main/play/release-notes/en-US/default.txt'
+                    }
+                }
+            }
+        }
+
+        stage('Build image') {
+            steps {
+                script {
+                    sh "cp /var/jenkins_home/android/android_keystore_${IDENTIFIER}.properties Docker/android_keystore.properties"
+                    sh 'cp /var/jenkins_home/android/android_service_account.json Docker'
+                    sh 'cp /var/jenkins_home/android/android.jks Docker'
+                    docker.build("${env.DOCKER_IMAGE_NAME}", "-f Docker/Dockerfile-Buildimage .")
+                }
+            }
+        }
+
+        stage('Convert') {
+            steps {
+                script {
+                    docker.build("${env.DOCKER_IMAGE_CONVERT}", "-f Docker/Dockerfile-convert .")
+                    docker.image("${env.DOCKER_IMAGE_CONVERT}").inside('-v /var/run/docker.sock:/var/run/docker.sock') {
+                        withEnv([
+                        ]) {
+                            sh 'cd imageConverter && sh ../Docker/convertSticker.sh || true'
+                            sh 'cd imageConverter && sh ../Docker/convertStickerTelegram.sh || true'
+                            sh 'cd imageConverter && sh ../Docker/convertAppLogo.sh || true'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+                    script {
+                        docker.build("${env.DOCKER_IMAGE_CHECKER}", "-f Docker/Dockerfile-checker .")
+                        docker.image("${env.DOCKER_IMAGE_CHECKER}").inside() {
+                            withEnv([
+                            ]) {
+                                sh 'cd Checker && npm install'
+                                sh 'cd Checker && sh ./runChecker.sh'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Build in Docker') {
+            steps {
+                dir('Android') {
+                    wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+                        script {
+                            docker.image("${env.DOCKER_IMAGE_NAME}").inside() {
+                                withEnv([
+                                ]) {
+                                    sh 'gradle bundle'
+                                    sh 'rm -rf out_bundle_archive_set.apks'
+                                    sh 'java -jar /builddir/tools/bundletool-all-0.9.0.jar build-apks --bundle=app/build/outputs/bundle/release/app-release.aab --output=out_bundle_archive_set.apks'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Upload Google') {
+            steps {
+                dir ('Android'){
+                    wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+                        script {
+                            docker.image("${env.DOCKER_IMAGE_NAME}").inside() {
+                                withEnv([
+                                ]) {
+                                    sh 'gradle publishBundle'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Archive App') {
+            steps {
+                dir('Android') {
+                    wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+                        sh 'rm -rf  tmp'
+                        sh 'mkdir -p tmp'
+                        sh 'unzip out_bundle_archive_set.apks -d tmp'
+                        archiveArtifacts artifacts: 'tmp/standalones/standalone-arm64_v8a_xxxhdpi.apk', fingerprint: true, allowEmptyArchive: false
+
+
+                        archiveArtifacts artifacts: 'out_bundle_archive_set.apks', fingerprint: true, allowEmptyArchive: false
+                        archiveArtifacts artifacts: 'app/build/outputs/bundle/debug/app-debug.aab', fingerprint: true, allowEmptyArchive: false
+                        archiveArtifacts artifacts: 'app/build/outputs/bundle/release/app-release.aab', fingerprint: true, allowEmptyArchive: false
+                    }
+                }
+            }
+        }
+
+        stage('Update Telegram') {
+            steps {
+                script {
+                    docker.build("${env.DOCKER_IMAGE_TELEGRAM}", "-f Docker/Dockerfile-TelegramUpdate .")
+                    docker.image("${env.DOCKER_IMAGE_TELEGRAM}").inside() {
+                        withEnv([
+                        ]) {
+                            sh 'cd telegramStickerUpload && npm install'
+                            sh 'cd telegramStickerUpload && sh ./runTelegramUpload.sh'
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    post {
+        /*
+            always {
+                script {
+                    //Dangling Containers
+                    sh 'docker ps -q -f status=exited | xargs --no-run-if-empty docker rm'
+                    //Dangling Images
+                    sh 'docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi'
+                    //Dangling Volumes
+                    sh 'docker volume ls -qf dangling=true | xargs -r docker volume rm'
+
+                    //sh "docker rmi ${image.id}"
+                }
+            }
+        */
+        changed {
+            script {
+                final def RECIPIENTS = emailextrecipients([
+                        [$class: 'DevelopersRecipientProvider'],
+                        [$class: 'CulpritsRecipientProvider']
+                ])
+
+                step([$class: 'Mailer', notifyEveryUnstableBuild: true, sendToIndividuals: true, recipients: RECIPIENTS])
+            }
+        }
+
+        failure {
+            script {
+                final def RECIPIENTS = emailextrecipients([
+                        [$class: 'DevelopersRecipientProvider'],
+                        [$class: 'CulpritsRecipientProvider']
+                ])
+
+                step([$class: 'Mailer', notifyEveryUnstableBuild: true, sendToIndividuals: true, recipients: RECIPIENTS])
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+FROM node:13.7.0-stretch
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update --fix-missing && apt-get upgrade -y --no-install-recommends
+RUN apt-get install -y --no-install-recommends dos2unix
+
+ADD telegramStickerUpload /project/telegramStickerUpload
+ADD Android /project/Android
+ADD imageConverter /project/imageConverter
+
+RUN dos2unix /project/telegramStickerUpload/runTelegramUpload.sh
+RUN rm -rf /project/telegramStickerUpload/node_modules
+
+RUN cd /project/telegramStickerUpload && npm install
+WORKDIR /project/telegramStickerUpload
