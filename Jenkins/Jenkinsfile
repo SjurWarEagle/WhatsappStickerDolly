@@ -12,7 +12,6 @@ pipeline {
     environment {
         IDENTIFIER = "experiments"
         PRODUCT_NAME = "WhatsApp-Sticker-de.tkunkel.${IDENTIFIER}"
-        PRODUCT_NAME = "WhatsApp-Sticker-de.tkunkel.${IDENTIFIER}"
         PATH = "${env.NODEJS_HOME}/bin:${env.PATH}"
         DOCKER_IMAGE_NAME = "build-${PRODUCT_NAME.toLowerCase()}-${BRANCH_NAME.toLowerCase()}"
         DOCKER_CONVERT_CHECKER = "convert-${PRODUCT_NAME.toLowerCase()}-${BRANCH_NAME.toLowerCase()}"
