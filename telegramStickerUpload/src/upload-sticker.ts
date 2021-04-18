@@ -8,7 +8,7 @@ const botUserName = 'WarEagleStickerCreatorBot'; //https://t.me/userinfobot
 const stickerPackOwner = '1170615219'; //https://t.me/userinfobot
 const statusReceiver = stickerPackOwner;
 const projectName = 'WarEagle';
-const projectPath = '/project/';//WarEagle
+const projectPath = '/project/';
 const contentJson: IContentJson = require(`${projectPath}/Android/app/src/main/assets/contents.json`);
 const bot = new Telegraf(token)
 

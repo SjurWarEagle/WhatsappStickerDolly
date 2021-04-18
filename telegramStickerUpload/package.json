@@ -5,7 +5,7 @@
   "scripts": {
     "docker:newrun:": "run-s docker:build:convert docker:run:convert",
     "docker:build:convert": "docker build -f ../Docker/Dockerfile-convert ../ -t whatsapp-convert/latest",
-    "docker:run:convert": "docker run -v E:\\IdeaProjects\\whatsappstickereagle:/projectDir whatsapp-convert/latest sh -c \"cd /projectDir/imageConverter ; sh /scripts/convertStickerTelegram.sh\"",
+    "docker:run:convert": "docker run -v E:\\IdeaProjects\\whatsappstickerdolly:/projectDir whatsapp-convert/latest sh -c \"cd /projectDir/imageConverter ; sh /scripts/convertStickerTelegram.sh\"",
     "upload-sticker": "ts-node src/upload-sticker.ts"
   },
   "dependencies": {
