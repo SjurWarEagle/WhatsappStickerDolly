@@ -142,7 +142,7 @@ dependencies {
 
 play {
     track = props['dolly_track']
-    userFraction = 1
+    userFraction = 0.999999999
     releaseStatus = props['dolly_releaseStatus']
     serviceAccountCredentials = file(props['dolly_serviceAccountCredentials'])
 }
