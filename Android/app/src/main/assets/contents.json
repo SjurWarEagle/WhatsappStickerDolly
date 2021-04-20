@@ -3,7 +3,7 @@
   "ios_app_store_link": "",
   "sticker_packs": [
     {
-      "image_data_version": "1",
+      "image_data_version": "2",
       "identifier": "dolly1",
       "name": "Dolly The Dinosaur 1",
       "publisher": "WarEagle",
@@ -172,7 +172,7 @@
       ]
     },
     {
-      "image_data_version": "1",
+      "image_data_version": "2",
       "identifier": "dolly2",
       "name": "Dolly The Dinosaur 2",
       "publisher": "WarEagle",
