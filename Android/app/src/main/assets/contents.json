@@ -241,6 +241,24 @@
           "emojis": [
             "🛌"
           ]
+        },
+        {
+          "image_file": "dollyt1Fire.webp",
+          "emojis": [
+            "👩‍🚒"
+          ]
+        },
+        {
+          "image_file": "dollyt1Science.webp",
+          "emojis": [
+            "👩‍🔬"
+          ]
+        },
+        {
+          "image_file": "dollyt1Tank.webp",
+          "emojis": [
+            "🦼"
+          ]
         }
       ]
     }
