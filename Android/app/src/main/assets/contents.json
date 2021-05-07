@@ -291,9 +291,21 @@
           ]
         },
         {
-          "image_file": "dollyCult.webp",
+          "image_file": "dollyKara.webp",
+          "emojis": [
+            "🐦"
+          ]
+        },
+        {
+          "image_file": "dollyt1Cult.webp",
           "emojis": [
             "🧚‍♀️"
+          ]
+        },
+        {
+          "image_file": "dollyt1D.webp",
+          "emojis": [
+            "😛"
           ]
         },
         {
